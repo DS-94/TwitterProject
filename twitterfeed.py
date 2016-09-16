@@ -5,13 +5,12 @@
 
 
 
-
+from twython import TwythonStreamer, Twython
 import json
 from pandas import DataFrame, Series
 import pandas
 import numpy
-import urllib
-import urllib2
+import datetime as dt
 
 resp = open('mannyweathoutput.txt', 'r')
 data = json.loads(resp.read())
@@ -52,15 +51,11 @@ weatherdict = {'NA': ['Not available', 'sunny', 'raining', 'windy'], 0: ['Clear 
 
 
 
-from twython import TwythonStreamer, Twython
-import pyodbc
-import json
-
-cnxn = pyodbc.connect('DSN=kubrick')
-type = ManFrame.loc['2016-09-16', 'Weather Type']
-
 tweets = []
 
+now = dt.datetime.now()
+t = dt.timedelta(seconds = 8*60*60)
+end = now + t
 
 class MyStreamer(TwythonStreamer):
     def on_success(self, data):
@@ -68,7 +63,7 @@ class MyStreamer(TwythonStreamer):
             tweets.append(data)
             print 'received tweet #', len(tweets)
 
-        if len(tweets) >= 2400:
+        if (len(tweets) >= 2400) or (dt.datetime.now() > end):
             self.disconnect()
 
     def on_error(self, status_code, data):
@@ -76,11 +71,7 @@ class MyStreamer(TwythonStreamer):
         self.disconnect()
 
 
-
-import datetime
-
-
-today = str(datetime.date.today())
+today = str(dt.date.today())
 
 
 Type = ManFrame['Weather Type'][today]
@@ -101,7 +92,7 @@ print trackvar1
 print trackvar2
 print trackvar3
 
-stream = MyStreamer(consumer key, consumer secret, access toke, access token secret)
+stream = MyStreamer(consumer key, soncumer secret, access key, access secret)
 stream.statuses.filter(track = trackvar1)
 
 with open('C:\\Users\\student03\\Desktop\\TiwtterProject\\TwitterProject\\savedtweets.json', 'a') as outfile:
