@@ -1,0 +1,1 @@
+'sunny', 'raining', 'windy','Clear night', 'cold','Sunny day', 'hot', 'boiling', 'cloudy', 'gloomy', 'overcast', 'mist', 'misty', 'foggy', 'fog','rain','drizzle', 'pouring', 'sleet','snow', 'hail', 'stormy', 'snowing','thunder', 'lightning'
